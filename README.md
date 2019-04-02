@@ -1,2 +1,2 @@
 # watering-timer
-Timer made with PIC-16F15345 and RTC-DS1302
+Simple timer project  made with PIC-16F15345 and RTC-DS1302
