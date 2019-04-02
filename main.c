@@ -40,7 +40,7 @@
 #pragma config WRTB = OFF       // Boot Block Write Protection bit (Boot Block not write protected)
 #pragma config WRTC = OFF       // Configuration Register Write Protection bit (Configuration Register not write protected)
 #pragma config WRTSAF = OFF     // Storage Area Flash Write Protection bit (SAF not write protected)
-#pragma config LVP = ON         // Low Voltage Programming Enable bit (Low Voltage programming enabled. MCLR/Vpp pin function is MCLR.)
+#pragma config LVP = OFF         // Low Voltage Programming Enable bit (Low Voltage programming enabled. MCLR/Vpp pin function is MCLR.)
 
 // CONFIG5
 #pragma config CP = OFF         // UserNVM Program memory code protection bit (UserNVM code protection disabled)
@@ -59,7 +59,7 @@ void main(void) {
    
     config_device();
    
-    rtc_initialize();
+    rtc_set_port();
     
     
     TURN_OFF_RELAY();
@@ -67,6 +67,7 @@ void main(void) {
     
     while(1){
         
+        /* Use these functions for setting the time */
         //rtc_single_byte_write(RTC_WRITE_HOURS, 0x10);
         //rtc_single_byte_write(RTC_WRITE_MINUTES, 0x05);
     
@@ -91,6 +92,5 @@ void main(void) {
             TURN_OFF_RELAY();
             TURN_OFF_RED_LED();
         }
-        
     }
 }

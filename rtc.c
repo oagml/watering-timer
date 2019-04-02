@@ -3,11 +3,15 @@
  * Author: Oscar
  *
  * Created on 15 de marzo de 2019, 12:32 PM
+ * 
  */
 
 #include "rtc.h"
 
-void rtc_initialize()
+/**
+ * Set the communication pins for CLK, DATA and CE
+ */
+void rtc_set_port()
 {
     /* Clock pin */
     TRISCbits.TRISC0 = 0;   // 0 = PORTC0 pin is configured as an output
@@ -30,20 +34,15 @@ void rtc_initialize()
     ODCONCbits.ODCC2 = 1;   // 0 = Port pin operates as standard push-pull drive (source and sink current)
     RTC_CE_PIN = LOW;
     
-    
 }
 
-void delay(int time)
-{
-    for(int i = 0; i < time; i++){
-    }
-}
-
+/**
+ * Write a single byte to a given register
+ * @param command - The command includes the register address that we want to write to
+ * @param data
+ */
 void rtc_single_byte_write(uint8_t command, uint8_t data)
-{
-    /* Set bit 0 as 0 for a write operation*/
-    command &= 0xFE;
-    
+{  
     /* Enable chip */
     RTC_CE_PIN = HIGH;
     
@@ -54,7 +53,7 @@ void rtc_single_byte_write(uint8_t command, uint8_t data)
             
     for(int i = 0; i <= 7; i++){
 
-        RTC_DATA_PIN = (0x01 & (command >> i));
+        RTC_DATA_PIN = (uint8_t)(0x01 & (command >> i));
         delay(10);
         RTC_SCLK_PIN = HIGH;
         delay(10);
@@ -62,7 +61,7 @@ void rtc_single_byte_write(uint8_t command, uint8_t data)
     }
     
     for(int i = 0; i <= 7; i++){
-        RTC_DATA_PIN = (0x01 & (data >> i));
+        RTC_DATA_PIN = (uint8_t)(0x01 & (data >> i));
         delay(10);
         RTC_SCLK_PIN = HIGH;
         delay(10);
@@ -72,6 +71,11 @@ void rtc_single_byte_write(uint8_t command, uint8_t data)
     RTC_CE_PIN = LOW;
 }
 
+/**
+ * Read a byte of a register from the RTC
+ * @param command - The command includes the register address we want to read
+ * @return 
+ */
 uint8_t rtc_single_byte_read(uint8_t command)
 {
     uint8_t data = 0;
@@ -86,7 +90,7 @@ uint8_t rtc_single_byte_read(uint8_t command)
     
     for(int i = 0; i <= 7; i++){
         
-        RTC_DATA_PIN = (0x01 & (command >> i));
+        RTC_DATA_PIN = (uint8_t)(0x01 & (command >> i));
         delay(10);
         RTC_SCLK_PIN = HIGH;
         delay(10);
@@ -101,7 +105,7 @@ uint8_t rtc_single_byte_read(uint8_t command)
     delay(5); //Delay to save the first bit
     
     for(int i = 0; i <= 7; i++){
-        data |= (PORTCbits.RC1 << i);
+        data |= (uint8_t)(PORTCbits.RC1 << i);
         delay(5);
         RTC_SCLK_PIN = HIGH;
         delay(10);
@@ -113,4 +117,14 @@ uint8_t rtc_single_byte_read(uint8_t command)
     RTC_CE_PIN = LOW;
     
     return data;
+}
+
+/**
+ * Basic loop delay
+ * @param time
+ */
+void delay(int counter)
+{
+    for(int i = 0; i < counter; i++){
+    }
 }

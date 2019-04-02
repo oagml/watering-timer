@@ -24,15 +24,30 @@
 #define TURN_ON_GREEN_LED()           LATBbits.LATB7 = 1
 #define TURN_OFF_GREEN_LED()          LATBbits.LATB7 = 0
 
-
+/**
+ * Set the green led pin
+ */
 void config_green_led();
 
+/**
+ * Set the red led pin
+ */
 void config_red_led();
 
+/**
+ *  Set the pin to drive the transistor to drive the relay
+ */
 void config_relay_switch();
 
+/**
+ * Set the oscillator registers
+ */
+void config_clock();
+
+/**
+ * Configure the device
+ */
 void config_device();
 
-void config_clock();
 
 #endif	/* XC_HEADER_TEMPLATE_H */

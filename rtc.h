@@ -19,6 +19,8 @@
 #define HIGH                    1
 #define LOW                     0
 
+/* These are the register/commands of the RTC chip, the byte include both the 
+    register and operation we want to do */
 #define RTC_WRITE_SECONDS       0x80
 #define RTC_READ_SECONDS        0x81
 #define RTC_WRITE_MINUTES       0x82
@@ -45,14 +47,28 @@
 #define RTC_RAT_BURST_READ      0xFF
 
 /**
- * Set the communication pins
+ * Set the communication pins for CLK, DATA and CE
  */
-void rtc_initialize();
+void rtc_set_port();
 
+/**
+ * Write a single byte to a given register
+ * @param command - The command includes the register address that we want to write to
+ * @param data
+ */
 void rtc_single_byte_write(uint8_t command, uint8_t data);
 
+/**
+ * Read a byte of a register from the RTC
+ * @param command - The command includes the register address we want to read
+ * @return 
+ */
 uint8_t rtc_single_byte_read(uint8_t command);
 
-void delay(int time);
+/**
+ * Basic loop delay
+ * @param time
+ */
+void delay(int counter);
 
 #endif	/* XC_HEADER_TEMPLATE_H */
