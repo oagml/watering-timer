@@ -1,6 +1,6 @@
 /* 
- * File:   
- * Author: 
+ * File: device.h   
+ * Author: Oscar
  * Comments:
  * Revision history: 
  */
